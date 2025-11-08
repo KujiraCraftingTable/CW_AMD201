@@ -40,19 +40,19 @@ namespace shortenUrl.MVC.Controllers
             if (url == null)
                 return NotFound();
 
-            // Generate QR code from OriginalUrl
-            //var qrTargetUrl = url.OriginalUrl;
+            //Generate QR code from OriginalUrl
+            var qrTargetUrl = url.OriginalUrl;
 
-            //using var qrGenerator = new QRCodeGenerator();
-            //using var qrCodeData = qrGenerator.CreateQrCode(qrTargetUrl, QRCodeGenerator.ECCLevel.Q);
-            //using var qrCode = new QRCode(qrCodeData);
-            //using var bitmap = qrCode.GetGraphic(20);
+            using var qrGenerator = new QRCodeGenerator();
+            using var qrCodeData = qrGenerator.CreateQrCode(qrTargetUrl, QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new QRCode(qrCodeData);
+            using var bitmap = qrCode.GetGraphic(20);
 
-            //using var stream = new MemoryStream();
-            //bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-            //var qrImageBase64 = Convert.ToBase64String(stream.ToArray());
+            using var stream = new MemoryStream();
+            bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+            var qrImageBase64 = Convert.ToBase64String(stream.ToArray());
 
-            //ViewBag.QrCode = $"data:image/png;base64,{qrImageBase64}";
+            ViewBag.QrCode = $"data:image/png;base64,{qrImageBase64}";
 
             return View(url);
         }
