@@ -1,0 +1,53 @@
+﻿@model shortenUrl.MVC.Data.Entities.Url
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container py-4">
+    <div class="mb-4">
+        <h2 class="text-primary fw-bold">
+            <i class="bi bi-pencil-square me-2"></i> @ViewData["Title"] Short URL
+        </h2>
+        <p class="text-muted">Update the original URL or customize the short version.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Edit" method="post" class="shadow-sm p-4 rounded border bg-light">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="OriginalUrl" class="form-label fw-semibold">
+                        <i class="bi bi-link-45deg me-1 text-primary"></i> Original URL
+                    </label>
+                    <input asp-for="OriginalUrl" class="form-control" placeholder="https://example.com/your-link" />
+                    <span asp-validation-for="OriginalUrl" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ShortenedUrl" class="form-label fw-semibold">
+                        <i class="bi bi-pencil-square me-1 text-secondary"></i> Custom Short URL
+                    </label>
+                    <input asp-for="ShortenedUrl" class="form-control" placeholder="e.g. updated-code" />
+                    <span asp-validation-for="ShortenedUrl" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to List
+                    </a>
+                    <input type="submit" value="Save" class="btn btn-primary px-4" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

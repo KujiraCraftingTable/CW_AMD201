@@ -1,0 +1,62 @@
+﻿@model shortenUrl.MVC.Data.Entities.Url
+
+@{
+    ViewData["Title"] = "Delete Short URL";
+}
+
+<div class="container py-4">
+    <div class="mb-4">
+        <h2 class="text-danger fw-bold">
+            <i class="bi bi-trash3-fill me-2"></i> @ViewData["Title"]
+        </h2>
+        <div class="text-center mb-4">
+            <h3 class="text-danger fw-bold">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                Are you sure you want to delete this shortened URL?
+            </h3>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="shadow-sm p-4 rounded border bg-light">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 fw-semibold text-secondary">
+                        <i class="bi bi-link-45deg me-1 text-primary"></i> Original URL
+                    </dt>
+                    <dd class="col-sm-8">
+                        <a href="@Model.OriginalUrl" target="_blank" 
+                            class="text-decoration-none text-primary fw-semibold text-break"
+                            style="display:inline-block; max-width:100%; word-break:break-all; overflow-wrap:anywhere; white-space:normal;">
+                            @Model.OriginalUrl
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4 fw-semibold text-secondary mt-3">
+                        <i class="bi bi-link me-1 text-success"></i> Shortened URL
+                    </dt>
+                    <dd class="col-sm-8 mt-3">
+                        <a href="@($"/u/{Model.ShortenedUrl}")" target="_blank" class="text-decoration-none text-primary fw-semibold">
+                            @Context.Request.Scheme://@Context.Request.Host/u/@Model.ShortenedUrl
+                        </a>
+                    </dd>
+                </dl>
+
+                <form asp-action="Delete" method="post" class="mt-4">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        <input type="submit" value="Delete" class="btn btn-danger px-4" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

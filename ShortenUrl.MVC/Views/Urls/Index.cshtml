@@ -1,0 +1,104 @@
+﻿@model IEnumerable<shortenUrl.MVC.Data.Entities.Url>
+
+@{
+    ViewData["Title"] = "List of Shortened URLs";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">
+            <i class="bi bi-link-45deg me-2"></i> @ViewData["Title"]
+        </h2>
+        <a class="btn btn-success btn-lg px-4 rounded-pill shadow-sm d-flex align-items-center gap-2" asp-action="Create">
+            <i class="bi bi-plus-circle fs-5"></i> <span class="fw-semibold">Add New</span>
+        </a>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped table-sm shadow-sm table-custom-border">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th style="width: 60%">Original URL</th>
+                        <th style="width: 30%">Shortened URL</th>
+                        <th style="width: 10%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var fullShortUrl = $"{Context.Request.Scheme}://{Context.Request.Host}/u/{item.ShortenedUrl}";
+                        <tr>
+                            <td style="word-break: break-word;">
+                                <a href="@item.OriginalUrl" target="_blank" class="text-decoration-none">
+                                    <i class="bi bi-box-arrow-up-right me-1"></i> @item.OriginalUrl
+                                </a>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <a href="@fullShortUrl" target="_blank" class="text-decoration-none">
+                                        <i class="bi bi-link me-1"></i> @fullShortUrl
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="copyToClipboard('@fullShortUrl')" title="Copy to clipboard">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-outline-info me-1" asp-action="Details" asp-route-id="@item.Id" title="View details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id" title="Delete this URL">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center mt-4">
+            <i class="bi bi-info-circle"></i> No shortened URLs found.
+            <a asp-action="Create" class="btn btn-sm btn-outline-primary ms-2">Create one now</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Short URL copied to clipboard!");
+            });
+        }
+    </script>
+
+    <style>
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #f0f4f8 !important; 
+        }
+
+        .table-custom-border td,
+        .table-custom-border th {
+            border: 2px solid #dee2e6;
+        }
+    </style>
+
+    <style>
+        .btn-success {
+            background:  #0d6efd;
+            border: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-success:hover {
+            background: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px #0b5ed7;
+         }
+    </style>
+}

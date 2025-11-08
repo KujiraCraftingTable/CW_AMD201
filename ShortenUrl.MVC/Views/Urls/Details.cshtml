@@ -1,0 +1,67 @@
+﻿@model shortenUrl.MVC.Data.Entities.Url
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container py-4">
+    <div class="mb-4">
+        <h2 class="text-primary fw-bold">
+            <i class="bi bi-info-circle me-2"></i> @ViewData["Title"] Short URL
+        </h2>
+        <p class="text-muted">Here are the details of your shortened link.</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="shadow-sm p-4 rounded border bg-light">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 fw-semibold text-secondary">
+                        <i class="bi bi-link-45deg me-1 text-primary"></i> Original URL
+                    </dt>
+                    <dd class="col-sm-8">
+                        <a href="@Model.OriginalUrl" target="_blank"
+                           class="text-decoration-none text-primary fw-semibold text-break"
+                           style="display:inline-block; max-width:100%; word-break:break-all; overflow-wrap:anywhere; white-space:normal;">
+                            @Model.OriginalUrl
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4 fw-semibold text-secondary mt-3">
+                        <i class="bi bi-link me-1 text-success"></i> Shortened URL
+                    </dt>
+                    <dd class="col-sm-8 mt-3">
+                        <a href="@($"/u/{Model.ShortenedUrl}")" target="_blank"
+                           class="text-decoration-none text-primary fw-semibold text-break"
+                           style="display:inline-block; max-width:100%; word-break:break-all; overflow-wrap:anywhere; white-space:normal;">
+                            @Context.Request.Scheme://@Context.Request.Host/u/@Model.ShortenedUrl
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4 fw-semibold text-secondary mt-3">
+                        <i class="bi bi-qr-code me-1 text-dark"></i> QR Code
+                    </dt>
+                    <dd class="col-sm-8 mt-3">
+                        <img src="@ViewBag.QrCode" alt="QR Code" class="img-thumbnail shadow-sm" style="max-width: 200px;" />
+                    </dd>
+
+                </dl>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to List
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary px-4">
+                        <i class="bi bi-pencil-square me-1"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
